@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Segundo Mes 💕</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.468.0/font/lucide.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rose: {
+                            soft: '#fff1f2',
+                            pastel: '#fce7f3',
+                            medium: '#fbcfe8',
+                            accent: '#ec4899',
+                            strong: '#f43f5e',
+                            deep: '#be185d'
+                        }
+                    },
+                    fontFamily: {
+                        script: ['"Great Vibes"', '"Sacramento"', 'cursive'],
+                        body: ['Poppins', 'Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-body bg-gradient-to-br from-rose-soft via-rose-pastel to-white min-h-screen overflow-x-hidden">
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="assets/musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="lockScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-rose-soft via-rose-pastel to-rose-medium backdrop-blur-sm transition-opacity duration-1000">
+        <div class="envelope-container relative w-[90%] max-w-md mx-4">
+            <div class="envelope bg-white rounded-3xl shadow-2xl overflow-hidden p-8 md:p-10 border border-rose-200/60">
+                <div class="envelope-flap absolute top-0 left-0 right-0 h-32 bg-gradient-to-br from-rose-accent to-rose-strong origin-top transform transition-transform duration-700 ease-out"></div>
+                
+                <div class="relative mt-16 text-center">
+                    <div class="heart-lock mx-auto w-20 h-20 mb-6 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-rose-accent animate-heartbeat" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </div>
+
+                    <h2 class="font-script text-5xl md:text-6xl text-rose-deep mb-3">Bienvenida, amor</h2>
+                    <p class="text-gray-600 text-sm md:text-base mb-8">Este rincón es solo para nosotros 🌹</p>
+
+                    <div class="space-y-4">
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="dateInput" 
+                                placeholder="Ingresa nuestra fecha especial (DD/MM/AAAA)"
+                                class="w-full px-5 py-4 rounded-2xl border-2 border-rose-200 bg-rose-soft/40 text-gray-700 placeholder-gray-400 text-center text-sm md:text-base focus:outline-none focus:border-rose-accent focus:ring-4 focus:ring-rose-accent/20 transition-all duration-300"
+                                autocomplete="off"
+                                maxlength="10"
+                            >
+                        </div>
+
+                        <button 
+                            id="unlockBtn"
+                            class="w-full py-4 px-6 bg-gradient-to-r from-rose-accent to-rose-strong text-white font-semibold rounded-2xl shadow-lg shadow-rose-accent/30 hover:shadow-xl hover:shadow-rose-accent/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
+                        >
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                            Abrir nuestra historia
+                        </button>
+
+                        <div id="errorHint" class="hidden text-rose-strong text-xs md:text-sm font-medium bg-rose-soft/80 py-3 px-4 rounded-xl border border-rose-200/60 animate-shake">
+                            💭 Pista: El día que comenzó nuestra historia...
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-rose-100">
+                        <p class="font-script text-2xl md:text-3xl text-rose-accent">Con amor, siempre</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute -top-16 -left-10 w-20 h-20 opacity-60 animate-float-slow">
+                <svg viewBox="0 0 24 24" fill="#ec4899" class="w-full h-full">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+            <div class="absolute -bottom-8 -right-6 w-14 h-14 opacity-50 animate-float-delayed">
+                <svg viewBox="0 0 24 24" fill="#f43f5e" class="w-full h-full">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainContent" class="opacity-0 transition-opacity duration-1000 pointer-events-none">
+        
+        <button 
+            id="musicToggle" 
+            class="fixed top-4 right-4 z-40 w-12 h-12 rounded-full bg-white/80 backdrop-blur-md border border-rose-200 shadow-lg shadow-rose-accent/20 flex items-center justify-center text-rose-accent hover:bg-white hover:scale-110 active:scale-95 transition-all duration-300"
+            title="Reproducir/Pausar música"
+        >
+            <svg id="iconMusicPlay" class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"/>
+                <circle cx="6" cy="18" r="3"/>
+                <circle cx="18" cy="16" r="3"/>
+            </svg>
+            <svg id="iconMusicPause" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="6" y="4" width="4" height="16"/>
+                <rect x="14" y="4" width="4" height="16"/>
+            </svg>
+        </button>
+
+        <div id="heartsContainer" class="fixed inset-0 pointer-events-none z-30 overflow-hidden"></div>
+
+        <header class="relative py-20 md:py-32 px-4 md:px-8">
+            <div class="absolute inset-0 bg-gradient-to-b from-rose-pastel/60 to-transparent"></div>
+            <div class="relative max-w-4xl mx-auto text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="relative">
+                        <svg class="w-20 h-20 md:w-28 md:h-28 text-rose-accent animate-heartbeat" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                        <div class="absolute -top-2 -right-2 w-10 h-10 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-rose-accent to-rose-strong flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-lg shadow-rose-accent/40 border-4 border-white animate-bounce-slow">
+                            2°
+                        </div>
+                    </div>
+                </div>
+
+                <h1 class="font-script text-6xl md:text-8xl lg:text-9xl text-rose-deep leading-tight mb-6 drop-shadow-sm">
+                    Nuestro<br>Segundo Mes
+                </h1>
+
+                <div class="w-32 h-1 bg-gradient-to-r from-transparent via-rose-accent to-transparent mx-auto mb-8 rounded-full"></div>
+
+                <p class="font-script text-3xl md:text-5xl text-rose-accent mb-6">
+                    ¡Feliz segundo mes, amor!
+                </p>
+
+                <p class="text-gray-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+                    Desde el <span class="font-semibold text-rose-strong">1 de Agosto de 2026</span>, mi vida cambió por completo. 
+                    Gracias por ser mi paz, mi hogar y mi razón para sonreír cada día. 
+                    Cada momento contigo es un regalo que atesoro en lo más profundo de mi corazón. 💕
+                </p>
+
+                <div class="mt-12 flex flex-wrap justify-center gap-3 text-sm">
+                    <span class="px-5 py-2 bg-white/70 backdrop-blur rounded-full border border-rose-200 text-rose-deep shadow-sm">🌹 2 meses de amor</span>
+                    <span class="px-5 py-2 bg-white/70 backdrop-blur rounded-full border border-rose-200 text-rose-deep shadow-sm">✨ Infinitos momentos</span>
+                    <span class="px-5 py-2 bg-white/70 backdrop-blur rounded-full border border-rose-200 text-rose-deep shadow-sm">💖 Tú y yo, siempre</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="py-16 md:py-24 px-4 md:px-8">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12 md:mb-16">
+                    <h2 class="font-script text-5xl md:text-6xl text-rose-deep mb-4">Nuestros Momentos</h2>
+                    <p class="text-gray-600 max-w-xl mx-auto text-sm md:text-base">Un recorrido por las sonrisas, miradas y abrazos que hemos compartido. Pasa el cursor o toca cada tarjeta para descubrir su mensaje secreto 💌</p>
+                    <div class="w-24 h-1 bg-gradient-to-r from-transparent via-rose-accent to-transparent mx-auto mt-6 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    
+                    <div class="flip-card h-80 md:h-96 group cursor-pointer" data-flip>
+                        <div class="flip-card-inner relative w-full h-full transition-transform duration-700 transform-style-preserve-3d">
+                            
+                            <div class="flip-card-front absolute inset-0 rounded-3xl overflow-hidden shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden">
+                                <img src="assets/foto3.jpeg" alt="Momento 1" class="w-full h-full object-cover" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-rose-deep/70 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-5">
+                                    <p class="text-white font-script text-2xl md:text-3xl">Nuestro primer recuerdo</p>
+                                    <p class="text-rose-pastel text-xs md:text-sm opacity-90">Toca para leer más ✨</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flip-card-back absolute inset-0 rounded-3xl bg-gradient-to-br from-rose-pastel via-rose-medium to-rose-pastel p-6 md:p-8 shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center">
+                                <svg class="w-10 h-10 text-rose-strong mb-4" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                                <p class="font-script text-3xl md:text-4xl text-rose-deep mb-3">El principio</p>
+                                <p class="text-gray-700 text-sm md:text-base leading-relaxed">
+                                    Amor, esta foto guarda el latido de nuestro primer capítulo. 
+                                    Desde ese instante, supe que mi corazón había encontrado su lugar favorito del mundo entero. 
+                                    No imaginaba cuánta felicidad cabría en una sola mirada tuya. 🌹
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-card h-80 md:h-96 group cursor-pointer" data-flip>
+                        <div class="flip-card-inner relative w-full h-full transition-transform duration-700 transform-style-preserve-3d">
+                            
+                            <div class="flip-card-front absolute inset-0 rounded-3xl overflow-hidden shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden">
+                                <img src="assets/foto1.jpeg" alt="Momento 2" class="w-full h-full object-cover" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-rose-deep/70 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-5">
+                                    <p class="text-white font-script text-2xl md:text-3xl">Risas compartidas</p>
+                                    <p class="text-rose-pastel text-xs md:text-sm opacity-90">Toca para leer más ✨</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flip-card-back absolute inset-0 rounded-3xl bg-gradient-to-br from-rose-pastel via-rose-medium to-rose-pastel p-6 md:p-8 shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center">
+                                <svg class="w-10 h-10 text-rose-strong mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                                    <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                    <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                </svg>
+                                <p class="font-script text-3xl md:text-4xl text-rose-deep mb-3">Tus risas</p>
+                                <p class="text-gray-700 text-sm md:text-base leading-relaxed">
+                                    Tu risa es mi melodía favorita, amor. Cuando te escucho reír, 
+                                    todo lo demás se detiene y el mundo se llena de color. 
+                                    Prometo hacerte reír todos los días de nuestra vida. 😊
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-card h-80 md:h-96 group cursor-pointer" data-flip>
+                        <div class="flip-card-inner relative w-full h-full transition-transform duration-700 transform-style-preserve-3d">
+                            
+                            <div class="flip-card-front absolute inset-0 rounded-3xl overflow-hidden shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden">
+                                <img src="assets/foto2.jpeg" alt="Momento 3" class="w-full h-full object-cover" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-rose-deep/70 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-5">
+                                    <p class="text-white font-script text-2xl md:text-3xl">Aventura juntos</p>
+                                    <p class="text-rose-pastel text-xs md:text-sm opacity-90">Toca para leer más ✨</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flip-card-back absolute inset-0 rounded-3xl bg-gradient-to-br from-rose-pastel via-rose-medium to-rose-pastel p-6 md:p-8 shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center">
+                                <svg class="w-10 h-10 text-rose-strong mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                <p class="font-script text-3xl md:text-4xl text-rose-deep mb-3">Nuestra ruta</p>
+                                <p class="text-gray-700 text-sm md:text-base leading-relaxed">
+                                    Cada salida, cada camino, cada lugar nuevo se convierte en mágico 
+                                    simplemente porque estás a mi lado. El destino no importa, 
+                                    mientras viajemos juntos de la mano. 🗺️💖
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-card h-80 md:h-96 group cursor-pointer" data-flip>
+                        <div class="flip-card-inner relative w-full h-full transition-transform duration-700 transform-style-preserve-3d">
+                            
+                            <div class="flip-card-front absolute inset-0 rounded-3xl overflow-hidden shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden">
+                                <img src="assets/foto4.jpg" alt="Momento 4" class="w-full h-full object-cover" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-rose-deep/70 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-5">
+                                    <p class="text-white font-script text-2xl md:text-3xl">Un dia mágico</p>
+                                    <p class="text-rose-pastel text-xs md:text-sm opacity-90">Toca para leer más ✨</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flip-card-back absolute inset-0 rounded-3xl bg-gradient-to-br from-rose-pastel via-rose-medium to-rose-pastel p-6 md:p-8 shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center">
+                                <svg class="w-10 h-10 text-rose-strong mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                                </svg>
+                                <p class="font-script text-3xl md:text-4xl text-rose-deep mb-3">Bajo las estrellas</p>
+                                <p class="text-gray-700 text-sm md:text-base leading-relaxed">
+Las días  contigo son mis favoritos. Tus palabras susurradas, tus silencios cómodos, la calma de tu presencia... Brillas más que todas las estrellas del universo para mí. 🌙⭐  
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-card h-80 md:h-96 group cursor-pointer" data-flip>
+                        <div class="flip-card-inner relative w-full h-full transition-transform duration-700 transform-style-preserve-3d">
+                            
+                            <div class="flip-card-front absolute inset-0 rounded-3xl overflow-hidden shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden">
+                                <img src="assets/foto5.jpeg" alt="Momento 5" class="w-full h-full object-cover" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-rose-deep/70 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-5">
+                                    <p class="text-white font-script text-2xl md:text-3xl">Nuestra calma</p>
+                                    <p class="text-rose-pastel text-xs md:text-sm opacity-90">Toca para leer más ✨</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flip-card-back absolute inset-0 rounded-3xl bg-gradient-to-br from-rose-pastel via-rose-medium to-rose-pastel p-6 md:p-8 shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center">
+                                <svg class="w-10 h-10 text-rose-strong mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                    <polyline points="9 22 9 12 15 12 15 22"/>
+                                </svg>
+                                <p class="font-script text-3xl md:text-4xl text-rose-deep mb-3">Mi hogar</p>
+                                <p class="text-gray-700 text-sm md:text-base leading-relaxed">
+                                    Amor, en tus brazos encontré mi hogar. No necesito grandes cosas, 
+                                    solo tu mano entrelazada con la mía, tu respiración cerca y 
+                                    la certeza de que contigo todo es posible. 🏡💞
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-card h-80 md:h-96 group cursor-pointer" data-flip>
+                        <div class="flip-card-inner relative w-full h-full transition-transform duration-700 transform-style-preserve-3d">
+                            
+                            <div class="flip-card-front absolute inset-0 rounded-3xl overflow-hidden shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden bg-gradient-to-br from-rose-accent to-rose-strong flex items-center justify-center p-6">
+                                <div class="text-center">
+                                    <svg class="w-20 h-20 text-white/90 mx-auto mb-4 animate-heartbeat" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                    </svg>
+                                    <p class="text-white font-script text-3xl md:text-4xl">Y muchos más...</p>
+                                    <p class="text-rose-pastel text-sm md:text-base mt-2 opacity-90">Por escribir juntos ✨</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flip-card-back absolute inset-0 rounded-3xl bg-gradient-to-br from-rose-pastel via-rose-medium to-rose-pastel p-6 md:p-8 shadow-xl shadow-rose-accent/20 border border-white/60 backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center">
+                                <svg class="w-10 h-10 text-rose-strong mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 20v-6M6 20V10M18 20V4"/>
+                                </svg>
+                                <p class="font-script text-3xl md:text-4xl text-rose-deep mb-3">Nuestro futuro</p>
+                                <p class="text-gray-700 text-sm md:text-base leading-relaxed">
+                                    Este es solo el comienzo de nuestra historia. Imagino miles de fotos más, 
+                                    viajes, risas, abrazos y días soleados a tu lado. 
+                                    Te elijo hoy, mañana y siempre, mi vida. 🚀💖
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-24 px-4 md:px-8 bg-gradient-to-b from-transparent via-rose-pastel/40 to-transparent">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12 md:mb-16">
+                    <h2 class="font-script text-5xl md:text-6xl lg:text-7xl text-rose-deep mb-4">Nuestra Película</h2>
+                    <p class="text-gray-600 max-w-xl mx-auto text-sm md:text-base">El instante en movimiento que guardo como un tesoro. Presiona reproducir y revivámoslo juntos, amor 🎬💕</p>
+                    <div class="w-24 h-1 bg-gradient-to-r from-transparent via-rose-accent to-transparent mx-auto mt-6 rounded-full"></div>
+                </div>
+
+                <div class="relative flex justify-center">
+                    <div class="absolute -top-6 -left-6 md:-top-10 md:-left-10 w-16 h-16 md:w-24 md:h-24 opacity-60 animate-float-slow z-10 pointer-events-none">
+                        <svg viewBox="0 0 24 24" fill="#ec4899" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-md">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </div>
+                    <div class="absolute -bottom-8 -right-6 md:-bottom-12 md:-right-10 w-14 h-14 md:w-20 md:h-20 opacity-50 animate-float-delayed z-10 pointer-events-none">
+                        <svg viewBox="0 0 24 24" fill="#f43f5e" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-md">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </div>
+
+                    <div class="polaroid-frame polaroid-single w-full max-w-3xl group">
+                        <div class="relative bg-white rounded-t-3xl rounded-b-[2.5rem] p-4 md:p-6 lg:p-7 shadow-[0_25px_70px_-15px_rgba(236,72,153,0.45)] border border-rose-100/70 hover:-translate-y-1 transition-all duration-500">
+                            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 md:w-28 h-5 md:h-6 bg-gradient-to-br from-rose-accent/90 to-rose-strong/90 rounded-sm shadow-md rotate-[-1.5deg] flex items-center justify-center overflow-hidden">
+                                <span class="text-[10px] md:text-xs text-white/90 font-semibold tracking-wide uppercase">Beso Favorito</span>
+                            </div>
+
+                            <div class="relative rounded-2xl overflow-hidden bg-black aspect-video ring-1 ring-black/10 shadow-inner">
+                                <video 
+                                    class="w-full h-full object-cover"
+                                    controls
+                                    preload="metadata"
+                                    playsinline
+                                    poster=""
+                                >
+                                    <source src="assets/beso.mp4" type="video/mp4">
+                                    Tu navegador no soporta reproducción de video.
+                                </video>
+                            </div>
+                            <div class="px-3 md:px-4 py-5 md:py-7 text-center">
+                                <div class="flex justify-center gap-2 mb-3 text-xs md:text-sm text-rose-accent/80">
+                                    <span>🎬</span><span>Escena · 01</span><span>•</span><span>2 meses juntos</span><span>🎬</span>
+                                </div>
+                                <h3 class="font-script text-3xl md:text-4xl lg:text-5xl text-rose-deep mb-3">Nuestro Beso Favorito</h3>
+                                <p class="text-gray-600 text-sm md:text-base leading-relaxed max-w-xl mx-auto">
+                                    Amor, cada beso tuyo es mi momento preferido del día. 
+                                    La calma, el calor, la sensación de que todo está bien 
+                                    mientras nuestros labios se encuentran. 
+                                    No cambiaría esto por nada del mundo. Gracias por ser mi película favorita, 
+                                    con inicio, nudo y un final sin fin. 💋💕
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-24 px-4 md:px-8">
+            <div class="max-w-3xl mx-auto">
+                <div class="text-center mb-12 md:mb-14">
+                    <h2 class="font-script text-5xl md:text-6xl text-rose-deep mb-4">Frasco de Razones</h2>
+                    <p class="text-gray-600 max-w-xl mx-auto text-sm md:text-base">Cada día hay más motivos para amarte. Saca una nota y descubre una nueva razón por la que eres mi persona favorita 🏺💌</p>
+                    <div class="w-24 h-1 bg-gradient-to-r from-transparent via-rose-accent to-transparent mx-auto mt-6 rounded-full"></div>
+                </div>
+
+                <div class="jar-container relative mx-auto w-full max-w-lg">
+                    
+                    <div class="jar-lid mx-auto w-3/4 h-6 md:h-8 bg-gradient-to-b from-rose-medium to-rose-accent rounded-t-full shadow-md relative z-10">
+                        <div class="absolute inset-x-0 top-0 h-3 bg-white/20 rounded-t-full"></div>
+                    </div>
+                    <div class="jar-neck mx-auto w-1/2 h-4 bg-gradient-to-b from-rose-pastel to-rose-medium/80"></div>
+
+                    <div class="relative jar-body bg-gradient-to-b from-rose-soft via-white/90 to-rose-pastel rounded-b-[3rem] rounded-t-lg p-6 md:p-10 border-4 border-rose-medium/50 shadow-2xl shadow-rose-accent/20 overflow-hidden">
+                        
+                        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                            <div class="absolute top-10 left-6 w-3 h-3 rounded-full bg-rose-accent/30 animate-float-slow"></div>
+                            <div class="absolute top-20 right-10 w-2 h-2 rounded-full bg-rose-strong/30 animate-float-delayed"></div>
+                            <div class="absolute bottom-20 left-10 w-4 h-4 rounded-full bg-rose-medium/40 animate-float-slow"></div>
+                            <div class="absolute bottom-10 right-6 w-2 h-2 rounded-full bg-rose-accent/30 animate-float-delayed"></div>
+                            <div class="absolute top-1/2 left-1/4 w-2 h-2 rounded-full bg-rose-strong/20 animate-float-slow"></div>
+                        </div>
+
+                        <div class="relative z-10">
+                            <div class="text-center mb-6">
+                                <svg class="w-14 h-14 md:w-16 md:h-16 text-rose-accent mx-auto animate-bounce-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <line x1="9" y1="13" x2="15" y2="13"/>
+                                    <line x1="9" y1="17" x2="15" y2="17"/>
+                                </svg>
+                            </div>
+
+                            <div class="note-card relative bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-rose-100 min-h-[180px] md:min-h-[200px] flex flex-col items-center justify-center">
+                                <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-yellow-100/80 rounded-sm shadow-sm rotate-[-3deg] border-l border-r border-yellow-200/50"></div>
+                                
+                                <div id="reasonContent" class="text-center transition-all duration-500">
+                                    <p class="font-script text-2xl md:text-3xl text-rose-deep mb-4">¿Listo, amor?</p>
+                                    <p class="text-gray-600 text-sm md:text-base leading-relaxed">
+                                        Abre el corazón y saca una razón. Cada nota está escrita con todo mi amor, 
+                                        pensando en cada detalle maravilloso que eres para mí. 💝
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 text-center">
+                                <button 
+                                    id="drawReasonBtn"
+                                    class="relative inline-flex items-center gap-2 px-8 md:px-10 py-4 md:py-5 bg-gradient-to-r from-rose-accent to-rose-strong text-white font-semibold rounded-full shadow-xl shadow-rose-accent/30 hover:shadow-2xl hover:shadow-rose-accent/40 hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 overflow-hidden group"
+                                >
+                                    <span class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+                                    <svg class="w-5 h-5 md:w-6 md:h-6 relative z-10 animate-shake-gentle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                        <circle cx="12" cy="10" r="3"/>
+                                    </svg>
+                                    <span class="relative z-10 text-sm md:text-base">Sacar una razón</span>
+                                    <svg class="w-5 h-5 md:w-6 md:h-6 relative z-10" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                    </svg>
+                                </button>
+                                <p id="reasonCounter" class="mt-4 text-xs md:text-sm text-gray-400 font-medium">
+                                    Razón <span id="reasonNum">0</span> del corazón 💫
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-24 px-4 md:px-8 bg-gradient-to-b from-transparent via-rose-pastel/50 to-rose-medium/30">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-block mb-8 animate-heartbeat">
+                    <svg class="w-20 h-20 md:w-24 md:h-24 text-rose-strong" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+
+                <h2 class="font-script text-5xl md:text-7xl text-rose-deep mb-6 leading-tight">
+                    Te amo,<br>mi amor
+                </h2>
+
+                <div class="w-40 h-1 bg-gradient-to-r from-transparent via-rose-accent to-transparent mx-auto mb-8 rounded-full"></div>
+
+                <p class="text-gray-700 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-4">
+                    Dos meses. Dos meses de descubrir cada día lo afortunado/a que soy de tenerte. 
+                    Dos meses de aprender que el amor verdadero se construye con detalles, 
+                    con escuchas, con paciencia y con miradas que dicen más que mil palabras.
+                </p>
+
+                <p class="text-gray-700 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-10">
+                    Gracias por ser tú. Por hacerme sentir en casa. 
+                    Por cada "buenos días" y cada "buenas noches". 
+                    Por tu risa, por tus manos, por tu corazón. 
+                    Aquí estaré, eligiéndote en cada versión de mi vida.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+                    <button 
+                        id="celebrateBtn"
+                        class="px-8 py-4 bg-gradient-to-r from-rose-accent to-rose-strong text-white font-semibold rounded-full shadow-xl shadow-rose-accent/30 hover:shadow-2xl hover:shadow-rose-accent/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2"
+                    >
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                            <line x1="9" y1="9" x2="9.01" y2="9"/>
+                            <line x1="15" y1="9" x2="15.01" y2="9"/>
+                        </svg>
+                        ¡Celebremos juntos!
+                    </button>
+                </div>
+
+                <p class="font-script text-3xl md:text-5xl text-rose-accent mb-3">
+                    Feliz segundo mes, vida mía
+                </p>
+                <p class="text-sm md:text-base text-gray-500">
+                    Desde el <span class="font-semibold text-rose-strong">01 · 08 · 2026</span> — y para siempre. 💕
+                </p>
+            </div>
+        </section>
+
+        <footer class="py-10 px-4 md:px-8 border-t border-rose-200/60 bg-white/50 backdrop-blur">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="flex justify-center gap-3 mb-4">
+                    <span>💕</span><span>🌹</span><span>✨</span><span>💖</span><span>🌙</span>
+                </div>
+                <p class="font-script text-2xl md:text-3xl text-rose-deep mb-2">Siempre tuyo/a, amor</p>
+                <p class="text-xs md:text-sm text-gray-400">Hecho con todo el corazón para el amor de mi vida — Nuestro segundo mes 🌷</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
